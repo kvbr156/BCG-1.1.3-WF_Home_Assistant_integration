@@ -1,0 +1,321 @@
+type: vertical-stack
+cards:
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_cntrl
+        state: Opentherm
+      - entity: sensor.ot_regim_regim
+        state: ExTS
+    card:
+      type: custom:thermostat-dark-card
+      step: '0.5'
+      chevron_size: '50'
+      pending: '3'
+      idle_zone: '2'
+      entity: climate.ot_room_external_thermostat
+      name: Комнатный OT термостат
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_cntrl
+        state: Opentherm
+      - entity: sensor.ot_regim_regim
+        state: NoTS
+    card:
+      type: thermostat
+      entity: climate.ot_ch_thermostat
+      name: Постоянная температура подачи
+      theme: Mushroom Shadow
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_cntrl
+        state: Opentherm
+      - entity: sensor.ot_regim_regim
+        state: IntTS
+      - entity: sensor.ot_regim_type
+        state: Room
+      - entity: sensor.ot_regim_sensor
+        state: NTC10k
+    card:
+      type: thermostat
+      entity: climate.ot_room_internal_thermostat_ntc
+      name: Программный термостат NTC
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_cntrl
+        state: Opentherm
+      - entity: sensor.ot_regim_regim
+        state: IntTS
+      - entity: sensor.ot_regim_sensor
+        state: NTC10k
+    card:
+      hours_to_show: 24
+      graph: line
+      type: sensor
+      entity: sensor.ot_ntc10k_temperature
+      detail: 2
+      name: Температура (NTC-датчик)
+      theme: Mushroom Shadow
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_regim
+        state: IntTS
+      - entity: sensor.ot_regim_sensor
+        state: MQTT_API
+      - entity: sensor.ot_regim_type
+        state: Outside
+    card:
+      hours_to_show: 24
+      graph: line
+      type: sensor
+      entity: sensor.ot_external_temperature
+      detail: 2
+      name: Температура на улице (MQTT)
+      theme: Mushroom Shadow
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_cntrl
+        state: Opentherm
+      - entity: sensor.ot_regim_regim
+        state: IntTS
+      - entity: sensor.ot_regim_type
+        state: Outside
+    card:
+      type: entity
+      entity: sensor.ot_regim_curve
+      name: Температурная кривая
+      theme: Mushroom Shadow
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_regim
+        state: IntTS
+      - entity: sensor.ot_regim_sensor
+        state: MQTT_API
+      - entity: sensor.ot_regim_type
+        state: Room
+    card:
+      type: custom:simple-thermostat
+      entity: climate.ot_room_internal_thermostat_mqtt
+      header:
+        name: Термостат внутренний MQTT
+      layout:
+        mode:
+          headings: false
+          icons: false
+          names: false
+  - hours_to_show: 24
+    graph: line
+    type: sensor
+    entity: sensor.ot_boiler_temperature
+    detail: 2
+    name: Котловая температура
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_cntrl
+        state: Opentherm
+      - entity: sensor.ot_regim_regim
+        state: ExTS
+    card:
+      hours_to_show: 24
+      graph: line
+      type: sensor
+      entity: sensor.ot_ntc10k_temperature
+      detail: 2
+      name: Температура на NTC датчике
+      theme: Mushroom Shadow
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.boiler_dhw_state
+        state: 'on'
+    card:
+      type: custom:mushroom-climate-card
+      entity: climate.ot_dhw_thermostat
+      name: ГВС
+      layout: horizontal
+      fill_container: false
+      primary_info: name
+      secondary_info: state
+      icon_type: none
+      hvac_modes:
+        - heat
+      show_temperature_control: true
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_pressure
+        state_not: '0.00'
+      - entity: sensor.boiler_error
+        state: '0'
+    card:
+      hours_to_show: 24
+      graph: line
+      type: sensor
+      entity: sensor.ot_pressure
+      detail: 2
+      name: Давление в котловом контуре
+  - square: true
+    columns: 4
+    type: grid
+    cards:
+      - type: custom:button-card
+        entity: binary_sensor.ot_connect
+        show_state: true
+        state:
+          - value: 'off'
+            operator: '=='
+            color: red
+            icon: mdi:connection
+          - value: 'on'
+            operator: '=='
+            color: green
+            icon: mdi:connection
+          - operator: default
+            color: yellow
+            icon: mdi:connection
+            styles:
+              card:
+                - opacity: 0.5
+      - type: custom:button-card
+        entity: sensor.boiler_error
+        show_state: true
+        state:
+          - value: 0
+            operator: '=='
+            color: grey
+            icon: mdi:alarm-light
+          - value: 1
+            operator: '>='
+            color: red
+            icon: mdi:alarm-light
+          - operator: default
+            color: yellow
+            icon: mdi:alarm-light
+            styles:
+              card:
+                - opacity: 0.5
+      - type: custom:button-card
+        entity: binary_sensor.flame
+        show_state: true
+        state:
+          - value: 'off'
+            operator: '=='
+            color: grey
+            icon: mdi:fire
+          - value: 'on'
+            operator: '=='
+            color: orange
+            icon: mdi:fire
+          - operator: default
+            color: yellow
+            icon: mdi:fire
+            styles:
+              card:
+                - opacity: 0.5
+      - type: custom:button-card
+        entity: sensor.modulation
+        show_state: true
+        state:
+          - value: 0
+            operator: '=='
+            color: grey
+            icon: mdi:percent-circle-outline
+          - value: 20
+            operator: '>='
+            color: orange
+            icon: mdi:percent-circle
+          - operator: default
+            color: yellow
+            icon: mdi:percent-circle-outline
+            styles:
+              card:
+                - opacity: 0.5
+  - square: false
+    columns: 2
+    type: grid
+    cards:
+      - type: custom:button-card
+        color: blue
+        entity: sensor.ot_ch_min
+        layout: icon_label
+        label: |
+          [[[
+            return 'Котел MIN: ' + states['sensor.ot_ch_min'].state +'°C';
+          ]]]
+        show_label: true
+        show_name: false
+        styles:
+          card:
+            - height: 50px
+      - type: custom:button-card
+        color: orange
+        entity: sensor.ot_ch_max
+        layout: icon_label
+        label: |
+          [[[
+            return 'Котел MAX: ' + states['sensor.ot_ch_max'].state +'°C';
+          ]]]
+        show_label: true
+        show_name: false
+        styles:
+          card:
+            - height: 50px
+      - type: custom:button-card
+        color: blue
+        entity: sensor.ot_dhw_min
+        layout: icon_label
+        label: |
+          [[[
+            return 'ГВС MIN: ' + states['sensor.ot_dhw_min'].state +'°C';
+          ]]]
+        show_label: true
+        show_name: false
+        styles:
+          card:
+            - height: 50px
+      - type: custom:button-card
+        color: orange
+        entity: sensor.ot_dhw_max
+        layout: icon_label
+        label: |
+          [[[
+            return 'ГВС MAX: ' + states['sensor.ot_dhw_max'].state +'°C';
+          ]]]
+        show_label: true
+        show_name: false
+        styles:
+          card:
+            - height: 50px
+  - show_name: false
+    show_icon: true
+    show_state: true
+    type: glance
+    entities:
+      - entity: binary_sensor.boiler_ch1_state
+      - entity: binary_sensor.boiler_dhw_state
+    title: Конфигурация оборудования
+    state_color: true
+    theme: Mushroom Shadow
+    columns: 2
+  - show_name: true
+    show_icon: true
+    show_state: true
+    type: glance
+    entities:
+      - entity: sensor.ot_regim_cntrl
+      - entity: sensor.ot_regim_regim
+    columns: 2
+    title: Режим работы
+    theme: Mushroom Shadow
+  - type: conditional
+    conditions:
+      - entity: sensor.ot_regim_cntrl
+        state: Opentherm
+    card:
+      show_name: true
+      show_icon: true
+      type: button
+      tap_action:
+        action: toggle
+      entity: switch.ot_rele
+      name: Реле
+      icon: mdi:lightbulb
+      show_state: false
+      icon_height: 50px

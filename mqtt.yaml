@@ -1,0 +1,217 @@
+sensor:
+  - unique_id: OT_Boiler_Error
+    name: "Boiler Error"
+    state_topic: "/devices/BCG113/controls/BoilerError"
+    unit_of_measurement: ""
+    icon: mdi:alertcircle
+
+  - unique_id: OT_Modulation
+    name: "Modulation"
+    state_topic: "/devices/BCG113/controls/Modulation"
+    unit_of_measurement: "%"
+    device_class: "power_factor"
+    icon: mdi:percent-circle-outline
+
+  - unique_id: OT_OutsideT
+    name: "OT_температура на улице"
+    state_topic: "/devices/BCG113/controls/OutsideT"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:thermometer
+
+  - unique_id: OT_DHWstptMin
+    name: "OT_DHW Min"
+    state_topic: "/devices/BCG113/controls/DHWstptMin"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:faucet
+
+  - unique_id: OT_DHWstptMax
+    name: "OT_DHW Max"
+    state_topic: "/devices/BCG113/controls/DHWstptMax"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:faucet
+
+  - unique_id: OT_CHstptMin
+    name: "OT_CH Min"
+    state_topic: "/devices/BCG113/controls/CHstptMin"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:radiator
+
+  - unique_id: OT_CHstptMax
+    name: "OT_CH Max"
+    state_topic: "/devices/BCG113/controls/CHstptMax"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:radiator
+
+  - unique_id: OT_Boiler_Temperature
+    name: "OT Boiler Temperature"
+    state_topic: "/devices/BCG113/controls/BoilerT"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:thermometer
+
+  - unique_id: OT_DHW_Temperature
+    name: "OT DHW Temperature"
+    state_topic: "/devices/BCG113/controls/DHWT"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:thermometer
+
+  - unique_id: OT_CH_Setpoint
+    name: "OT CH Setpoint"
+    state_topic: "/devices/BCG113/controls/CHstpt"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:thermometer
+
+  - unique_id: OT_External_Temperature
+    name: "OT External_Temperature"
+    state_topic: "/devices/BCG113/controls/ExternT"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:thermometer
+
+  - unique_id: OT_NTC10k_Temperature
+    name: "OT NTC10k Temperature"
+    state_topic: "/devices/BCG113/controls/NTC10kT"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    icon: mdi:thermometer
+
+  - unique_id: OT_Pressure
+    name: "OT Pressure"
+    state_topic: "/devices/BCG113/controls/Pressure"
+    unit_of_measurement: "bar"
+    device_class: "pressure"
+    icon: mdi:gauge
+
+  - unique_id: OT_Regim_Cntrl
+    name: "OT Regim Cntrl"
+    state_topic: "/devices/BCG113/controls/BCGRegim"
+    value_template: '{{ value_json.Cntrl }}'
+
+  - unique_id: OT_Regim_Regim
+    name: "OT Regim Regim"
+    state_topic: "/devices/BCG113/controls/BCGRegim"
+    value_template: '{{ value_json.Regim }}'
+
+  - unique_id: OT_Regim_Type
+    name: "OT Regim_Type"
+    state_topic: "/devices/BCG113/controls/BCGRegim"
+    value_template: '{{ value_json.Type }}'
+
+  - unique_id: OT_Regim_Sensor
+    name: "OT Regim_Sensor"
+    state_topic: "/devices/BCG113/controls/BCGRegim"
+    value_template: '{{ value_json.Sensor }}'
+
+  - unique_id: OT_Regim_Curve
+    name: "OT Regim_Curve"
+    state_topic: "/devices/BCG113/controls/BCGRegim"
+    value_template: '{{ value_json.k }}'
+
+binary_sensor:
+  - unique_id: OT_Boiler_CH1_State
+    name: "Boiler CH1 State"
+    state_topic: "/devices/BCG113/controls/BoilerContours"
+    value_template: '{{ value_json.CH1 }}'
+    payload_on: true
+    payload_off: false
+    icon: mdi:radiator
+
+  - unique_id: OT_Boiler_CH2_State
+    name: "Boiler CH2 State"
+    state_topic: "/devices/BCG113/controls/BoilerContours"
+    value_template: '{{ value_json.CH2 }}'
+    payload_on: true
+    payload_off: false
+    icon: mdi:radiator
+
+  - unique_id: OT_Boiler_DHW_State
+    name: "Boiler DHW State"
+    state_topic: "/devices/BCG113/controls/BoilerContours"
+    value_template: '{{ value_json.DHW }}'
+    payload_on: true
+    payload_off: false
+    icon: mdi:faucet
+  
+  - unique_id: OT_OT_Connect
+    name: "OT connect"
+    state_topic: "/devices/BCG113/controls/OTisConnect"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: "plug"
+    icon: mdi:waves
+    
+  - unique_id: OT_Boiler_Flame
+    name: "Flame"
+    state_topic: "/devices/BCG113/controls/BoilerFlame"
+    payload_on: "1"
+    payload_off: "0"
+    device_class: "heat"
+    icon: mdi:fire
+    
+switch:
+  - unique_id: OT_Rele
+    name: "OT Rele"
+    state_topic: "/devices/BCG113/controls/Rele"
+    command_topic: "/devices/BCG113/controls/Rele/on"
+    payload_on: "1"
+    payload_off: "0"
+    icon: mdi:toggle-switch
+
+climate:
+  - unique_id: OT_DHW_Thermostat
+    name: "OT DHW Thermostat"
+    temperature_state_topic: "/devices/BCG113/controls/DHWstpt"
+    temperature_command_topic: "/devices/BCG113/controls/DHWstpt/on"
+    current_temperature_topic: "/devices/BCG113/controls/DHWT"
+    min_temp: 0
+    max_temp: 90
+    value_template: "{{ value }}"
+    temp_step: 0.5
+
+  - unique_id: OT_CH_Thermostat
+    name: "OT CH Thermostat"
+    temperature_state_topic: "/devices/BCG113/controls/CHstpt"
+    temperature_command_topic: "/devices/BCG113/controls/CHstpt/on"
+    current_temperature_topic: "/devices/BCG113/controls/BoilerT"
+    min_temp: 0
+    max_temp: 90
+    value_template: "{{ value }}"
+    temp_step: 0.5
+
+  - unique_id: OT_Room_Internal_Thermostat_NTC
+    name: "OT Room Internal Thermostat NTC"
+    temperature_state_topic: "/devices/BCG113/controls/Roomstpt"
+    temperature_command_topic: "/devices/BCG113/controls/Roomstpt/on"
+    current_temperature_topic: "/devices/BCG113/controls/NTC10kT"
+    min_temp: 10
+    max_temp: 40
+    value_template: "{{ value }}"
+    temp_step: 0.5
+
+  - unique_id: OT_Room_Internal_Thermostat_MQTT
+    name: "OT Room Internal Thermostat MQTT"
+    temperature_state_topic: "/devices/BCG113/controls/Roomstpt"
+    temperature_command_topic: "/devices/BCG113/controls/Roomstpt/on"
+    current_temperature_topic: "/devices/BCG113/controls/ExternT"
+    min_temp: 10
+    max_temp: 40
+    value_template: "{{ value }}"
+    temp_step: 0.5
+
+## Термостатирование с использованием комнатного OT-термостата
+  - unique_id: OT_Room_External_Thermostat
+    name: "OT Room External Thermostat"
+    temperature_state_topic: "/devices/BCG113/controls/Roomstpt"
+    temperature_command_topic: "/devices/BCG113/controls/Roomstpt/on"
+    current_temperature_topic: "/devices/BCG113/controls/TSRoom"
+    min_temp: 10
+    max_temp: 40
+    value_template: "{{ value }}"
+    temp_step: 0.5
